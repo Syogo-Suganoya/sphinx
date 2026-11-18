@@ -562,10 +562,6 @@ class GoogleDocstring:
         else:
             return []
 
-    def _consume_usage_section(self) -> list[str]:
-        lines = self._dedent(self._consume_to_next_section())
-        return lines
-
     def _consume_section_header(self) -> str:
         section = self._lines.next()
         stripped_section = section.strip(':')
@@ -917,13 +913,6 @@ class GoogleDocstring:
     def _parse_custom_returns_style_section(self, section: str) -> list[str]:
         fields = self._consume_returns_section(preprocess_types=True)
         return self._format_fields(section, fields)
-
-    def _parse_usage_section(self, section: str) -> list[str]:
-        header = ['.. rubric:: Usage:', '']
-        block = ['.. code-block:: python', '']
-        lines = self._consume_usage_section()
-        lines = self._indent(lines, 3)
-        return header + block + lines + ['']
 
     def _parse_generic_section(self, section: str, use_admonition: bool) -> list[str]:
         lines = self._strip_empty(self._consume_to_next_section())

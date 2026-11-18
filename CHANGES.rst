@@ -18,6 +18,9 @@ Bugs fixed
 
 * #14797: Add missing hyphen to CVE and CWE role formats.
   Patch by Hugo van Kemenade
+* #13254: napoleon: Remove the unused code for a "Usage" section,
+  which was never registered as a supported section.
+  Patch by Syogo Suganoya
 
 Testing
 -------
