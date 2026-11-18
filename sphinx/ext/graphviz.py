@@ -260,9 +260,17 @@ def fix_svg_relative_paths(
             continue
         doc_dir = self.builder.outdir.joinpath(docname).resolve().parent
 
-        old_path = doc_dir / rel_uri
         img_path = doc_dir / self.builder.imgpath
-        new_path = os.path.relpath(old_path, start=img_path)
+        if rel_uri:
+            new_path = os.path.relpath(doc_dir / rel_uri, start=img_path)
+        else:
+            # A link such as '#anchor' refers to the page containing the graph,
+            # not to the directory it is in.
+            target_uri = self.builder.get_target_uri(docname)
+            page_path = self.builder.outdir.joinpath(target_uri).resolve()
+            new_path = os.path.relpath(page_path, start=img_path)
+            if target_uri.endswith('/'):
+                new_path = f'{new_path}/'
         modified_url = urlunsplit((scheme, hostname, new_path, query, fragment))
 
         element.set(href_name, modified_url)
