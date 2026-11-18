@@ -105,3 +105,13 @@ def test_toctree_multiple_parents(
         )
         etree = cached_etree_parse(app.outdir / 'charlie.html')
         check_xpath(etree, 'charlie.html', xpath=xpath_delta_children, check='Charlie')
+
+
+@pytest.mark.sphinx('html', testroot='toctree')
+def test_toctree_caption_heading_level(app: SphinxTestApp) -> None:
+    app.build()
+    content = (app.outdir / 'index.html').read_text(encoding='utf8')
+    assert (
+        '<p aria-level="2" class="caption" role="heading">'
+        '<span class="caption-text">Table of Contents</span>'
+    ) in content

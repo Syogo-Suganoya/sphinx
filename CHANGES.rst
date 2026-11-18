@@ -18,6 +18,9 @@ Bugs fixed
 
 * #14797: Add missing hyphen to CVE and CWE role formats.
   Patch by Hugo van Kemenade
+* #14030: HTML: Add ``aria-level="2"`` to toctree captions, which use
+  ``role="heading"``, to fix HTML validation errors.
+  Patch by Syogo Suganoya
 
 Testing
 -------

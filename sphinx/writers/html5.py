@@ -19,6 +19,7 @@ from sphinx.util.images import get_image_size
 
 if TYPE_CHECKING:
     from collections.abc import Callable
+    from typing import Any
 
     from docutils.nodes import Element, Node, Text
 
@@ -519,9 +520,14 @@ class HTML5Translator(SphinxTranslator, BaseTranslator):
             isinstance(node.parent, addnodes.compact_paragraph)
             and node.parent.get('toctree')
         ):  # fmt: skip
-            self.body.append(
-                self.starttag(node, 'p', '', CLASS='caption', ROLE='heading')
-            )
+            # 'aria-level' is required with role="heading";
+            # 2 is the implicit level that browsers used before.
+            attrs: dict[str, Any] = {
+                'CLASS': 'caption',
+                'ROLE': 'heading',
+                'aria-level': '2',
+            }
+            self.body.append(self.starttag(node, 'p', '', **attrs))
             self.body.append('<span class="caption-text">')
             self.context.append('</span></p>\n')
         elif (
