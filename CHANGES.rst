@@ -18,6 +18,9 @@ Bugs fixed
 
 * #14797: Add missing hyphen to CVE and CWE role formats.
   Patch by Hugo van Kemenade
+* #13078: graphviz: Fix links to anchors on the same page (such as ``#target``)
+  in SVG output, which pointed to the document's directory instead of the page.
+  Patch by Syogo Suganoya
 
 Testing
 -------
