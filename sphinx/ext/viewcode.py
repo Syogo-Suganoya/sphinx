@@ -311,8 +311,11 @@ def collect_pages(app: Sphinx) -> Iterator[tuple[str, dict[str, Any], str]]:
             lexer = env.config.highlight_language
         else:
             lexer = 'python'
+        opts = env.config.highlight_options.get(lexer, {})
         linenos = 'inline' * env.config.viewcode_line_numbers
-        highlighted = highlighter.highlight_block(code, lexer, linenos=linenos)
+        highlighted = highlighter.highlight_block(
+            code, lexer, opts=opts, linenos=linenos
+        )
         # split the code into lines
         lines = highlighted.splitlines()
         # split off wrap markup from the first line of the actual code

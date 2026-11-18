@@ -86,6 +86,21 @@ def test_viewcode(app: SphinxTestApp) -> None:
     assert 'class="linenos">' not in result
 
 
+@pytest.mark.sphinx(
+    'html',
+    testroot='ext-viewcode-highlight-options',
+    freshenv=True,
+)
+@pytest.mark.usefixtures('rollback_sysmodules')
+def test_viewcode_highlight_options(app: SphinxTestApp) -> None:
+    app.build(force_all=True)
+
+    result = (app.outdir / '_modules/tabbed.html').read_text(encoding='utf-8')
+    # highlight_options = {'python': {'tabsize': 3}} expands tabs to 3 spaces
+    assert '\t' not in result
+    assert '# a   b' in result
+
+
 @pytest.mark.sphinx('epub', testroot='ext-viewcode')
 @pytest.mark.usefixtures('rollback_sysmodules')
 def test_viewcode_epub_default(app: SphinxTestApp) -> None:
