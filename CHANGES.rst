@@ -18,6 +18,10 @@ Bugs fixed
 
 * #14797: Add missing hyphen to CVE and CWE role formats.
   Patch by Hugo van Kemenade
+* #13339: Parallel builds: Report the original exception raised while merging
+  results from a worker process (for example, by an :event:`env-merge-info`
+  handler) instead of an unrelated :exc:`KeyError`.
+  Patch by Syogo Suganoya
 
 Testing
 -------

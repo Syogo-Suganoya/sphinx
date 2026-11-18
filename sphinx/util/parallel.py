@@ -110,6 +110,7 @@ class ParallelTasks:
             # shutdown other child processes on failure
             # (e.g. OSError: Failed to allocate memory)
             self.terminate()
+            raise
 
     def join(self) -> None:
         try:
@@ -137,10 +138,14 @@ class ParallelTasks:
                     raise SphinxParallelError(*result)
                 for log in logs:
                     logger.handle(log)
-                self._result_funcs.pop(tid)(self._args.pop(tid), result)
+                # Finish the bookkeeping for this task before calling
+                # result_func, so that an exception raised by it is not
+                # replaced by a KeyError in terminate().
+                result_func = self._result_funcs.pop(tid)
                 self._procs[tid].join()
                 self._precvs.pop(tid)
                 self._pworking -= 1
+                result_func(self._args.pop(tid), result)
                 joined_any = True
                 break
 
